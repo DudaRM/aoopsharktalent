@@ -1,0 +1,15 @@
+//Código para criação de um grupo Major Incident, Role e regras para criação de incidentes com prioridade alta
+function onSubmit() {
+    if (g_form.getValue('impact') == 1 && g_form.getValue('urgency') == 1 && !g_user.hasRoleExactly('major_inc_mgr')) {
+        var ans = confirm("The customer is notified of all P1 incs. Select ok tosubmit, or cancel to return to the record.");
+        if (!ans) {
+            g_form.addInfoMessage('inc is not submitted');
+            g_form.addInfoMessage("if base info is unavailable, use the 'additional comments' field to document why it is missing.");
+            g_form.showFieldMsg('category', 'major inc base field');
+            g_form.showFieldMsg('cmdb_ci', 'major inc base field');
+            g_form.showFieldMsg('assignment_group', 'major inc base field');
+            g_form.showFieldMsg('short_description', 'major inc base field');
+        }
+        return ans;
+    }
+}
