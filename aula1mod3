@@ -13,3 +13,17 @@ function onSubmit() {
         return ans;
     }
 }
+
+
+//Exemplo de função onLoad
+function onLoad() {
+    //Type appropriate comment here, and begin script below
+    g_form.addInfoMessage('msg informacional carregada no topo do form');
+    g_form.addErrorMessage('msg de erro!!!!!!!!!!!!!!!!!!');
+    g_form.flash('caller_id', '#FF33ED', -10);
+    g_form.setValue('description', 'turma 20!!!!!!!!!!!');
+    g_form.setMandatory('contact_type', true);
+    g_form.addOption('state', 'pra ontem', 'pra ontem');
+    g_form.removeOption('state', '2'); //remove a opção "work in progress"
+    g_form.setLabelOf('state', 'pastelaria');
+}
