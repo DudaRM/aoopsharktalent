@@ -1,0 +1,23 @@
+//Modificando a UI action de Re-Analyze para garantir que problemas encerrados há mais de 30 dias não possam ser reabertos.
+
+action.setRedirectURL(current);
+
+try{
+
+    var today = new GlideDateTime();
+    var closed = new GlideDateTime(current.closed_at);
+
+    if (closed) {
+        var dateDiff = GlideDateTime.subtract(closed, today);
+        var dateDiffNum = dateDiff.getDayPart();
+
+        if (dateDiffNum > 30) {
+            gs.addErrorMessage("A problem cannot be reopened after it has been closed for more than 30 days. Please open a new Problem.");
+        } else {
+            new ProblemStateUtils().onReAnalyze(current);
+        }
+    }
+
+} catch (err) {
+    gs.error("A runtime error occurred: " + err);
+}
