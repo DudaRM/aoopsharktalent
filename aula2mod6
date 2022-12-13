@@ -21,3 +21,30 @@ try{
 } catch (err) {
     gs.error("A runtime error occurred: " + err);
 }
+
+
+//Métodos de data
+var gd = new GlideDate();//pegar o horário atual e não precisa usar parâmetro
+    gd.addDaysLocalTime(1);//add dia ou dias
+    current.setValue('u_data', gd);//setar o horário numa var tipo date
+    
+    var gdt = new GlideDateTime();//pegar o horário atual e não precisa uasr parâmetro
+    gdt.addDaysLocalTime(10);//add dia ou dias
+    current.setValue('u_datahora', gdt);//setar o horário numa var tipo date
+    
+//Verificar se a pessoa anexou um anexo no registro e não permitir salvar caso não tenha
+ if (current.hasAttachments() == true){
+        gs.addInfoMessage('tem anexo vlw!!!!!!');
+    } else {
+        gs.addErrorMessage('opa tá sem anexo');
+        current.setAbortAction(true);
+    }
+    
+//Remover opções de um form
+function onLoad() {
+    if (!g_user.hasRoleExactly('itil_admin')){
+        g_form.removeOption('pack_type', 'cym3');
+        g_form.removeOption('pack_type', 'cym6');
+    }
+}
+  
