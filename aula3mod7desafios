@@ -1,0 +1,51 @@
+Desafios:
+Extras usando o addEncodedQuery e o Scripts Background:
+1 - Remover uma lista de usuários ou registros 
+2 - habilitar a flag VIP em uma lista de usuários 
+3 - Setar o valor de um campo x numa lista de registros, 
+ex: incident, short_description com o valor 'atualizado pelo scripts - background'
+4 - Usando a encoded query, adicionar role em usuários
+
+Desafio 1:
+var gr = new GlideRecord('change_request');//nome da tabela
+
+gr.addEncodedQuery('state=-3^assigned_to=5137153cc611227c000bbd1bd8cd2007');//colar a encoded query
+
+gr.query();//executar a query
+
+
+
+while (gr.next()){ //interar por todos os registros
+
+    gr.deleteRecord(); //lógica neste caso vai deletar
+
+}
+
+Desafio 2:
+var gr = new GlideRecord('sys_user');//nome da tabela
+
+gr.addEncodedQuery('sys_created_onANYTHING');//colar a encoded query
+
+gr.query();//executar a query
+
+
+
+while (gr.next()){ //interar por todos os registros
+
+    gr.setValue('vip', true); // marca o campo vip como true ou gr.vip= true;
+
+    gr.update();
+
+}
+
+Desafio 3:
+
+Desafio 4:
+var gr = new GlideRecord('sys_user_has_role');
+gr.addEncodedQuery('vip=true'); //query montada pelo condition builder
+gr.query();
+
+while(gr.next()){
+    gr.role = 'f94b8a4597b311101cf4bc400153af40'; //sys id da role vip
+    gr.insert(); //inserir porque é um array
+}
