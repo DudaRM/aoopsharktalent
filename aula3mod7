@@ -1,0 +1,97 @@
+//Utilizando GlideRecord
+
+//+verboso
+
+var gr = new GlideRecord('incident');
+
+gr.addQuery('number', 'INC0010019');//numero do inc
+
+gr.query();
+
+
+if(gr.next()){
+
+    //exec lógica
+
+}
+
+//+acertiva
+
+var gr = new GlideRecord('incident');
+
+gr.get('c3ff45e42f33d110add92aa62799b6d8')//colar o sys_id do registro a ser afetado
+
+gr.short_description = 'fiz a alteracao pelo scripts background';
+
+gr.update();
+
+//tem menu de contexto
+
+//Deletar registros
+var gr = new GlideRecord('problem');
+
+gr.addEncodedQuery('assigned_to=73ab3f173b331300ad3cc9bb34efc4df') //query montada pelo condition builder
+
+gr.query();
+
+while(gr.next()){
+gr.deleteRecord();
+
+}
+
+
+//Pegar o número de incidentes ativos de uma tabela cuja descrição contenha a palavra SAP.
+(function executeRule(current, previous /*null when async*/ ) {
+
+    var sapInc = new GlideRecord("incident");
+    sapInc.addActiveQuery();
+    sapInc.addQuery("short_description", "CONTAINS", "SAP");
+    sapInc.query();
+
+    var myLog = "";
+    while (sapInc.next()) {
+        myLog += sapInc.number + " , ";
+    }
+    gs.addInfoMessage("These records are active SAP Incidents: " + myLog);
+
+})(current, previous);
+
+//Atualizar campo em vários registros que obedecem uma condição
+var gr = new GlideRecord('sys_user');
+gr.addEncodedQuery('titleLIKEVice^ORtitleLIKEVP^ORtitleLIKEChief'); //query montada pelo condition builder
+
+gr.query();
+
+while(gr.next()){
+
+gr.vip = true;
+gr.update();
+}
+
+//outro modo de fazer o mesmo, mas dentro da BR
+(function executeRule(current, previous /*null when async*/ ) {
+    var makeVIP = new GlideRecord("sys_user");
+    var q1 = makeVIP.addQuery('title', 'CONTAINS', 'VP');
+    q1.addOrCondition('title', 'CONTAINS', 'Vice');
+    q1.addOrCondition('title', 'CONTAINS', 'Chief');
+    makeVIP.query();
+    while (makeVIP.next()) {
+        makeVIP.vip = true;
+        gs.info("ADMIN: " + makeVIP.name + "with title: " + makeVIP.title + "is now a VIP.");
+        makeVIP.update();
+    }
+})(current, previous);
+
+
+//apagar vários registros de uma tabela
+//Atualizar campo em vários registros que obedecem uma condição
+var gr = new GlideRecord('change_request'); //nome tabela
+gr.addEncodedQuery('state=-3^assigned_to=5137153cc611227c000bbd1bd8cd2007^end_date<javascript:gs.beginningOfLast30Days()'); //query montada pelo condition builder
+gr.query();
+
+while(gr.next()){
+   gr.deleteRecord(); //deletar
+}
+
+
+
